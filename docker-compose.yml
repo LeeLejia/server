@@ -12,20 +12,6 @@ services:
     volumes:
       # - /home/ubuntu/project/docker/mongodb:/data/db
       - ./mongodb:/data/db
-  # wiki-tree 前端
-  back-end:
-    pid: "blog-backend"
-    privileged: true
-    restart: always
-    image: node:8.0.0
-    ports:
-      - 8000:8000
-    depends_on:
-      - mongodb
-    volumes:
-      - ../:/app
-    working_dir: /app
-    command: bash -c "npm install && npm rebuild node-sass --force && npm run build --prod"
   
   # nginx
   nginx:
@@ -34,9 +20,24 @@ services:
     restart: always
     image: openresty/openresty
     ports: 
-      - 80:80
+      - 8080:80
     # external_links:
     volumes:
       - ./nginx/conf:/usr/local/openresty/nginx/conf
       - ./nginx/logs:/usr/local/openresty/nginx/logs
       - ./nginx/html:/usr/local/openresty/nginx/html
+
+    # wiki-tree 前端
+    # back-end:
+    #   pid: "blog-backend"
+    #   privileged: true
+    #   restart: always
+    #   image: node:8.0.0
+    #   ports:
+    #     - 8000:8000
+    #   depends_on:
+    #     - mongodb
+    #   volumes:
+    #     - ../:/app
+    #   working_dir: /app
+    #   command: bash -c "npm install && npm rebuild node-sass --force && npm run build --prod"
