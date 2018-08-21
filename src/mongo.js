@@ -1,5 +1,9 @@
 import { MongoClient } from 'mongodb'
-import config from './config'
+// import config from './config'
+import config from 'config'
+
+// var MongoClient = require('mongodb')
+// var config = require('./config')
 
 let _db, _schema, statisticsModel
 

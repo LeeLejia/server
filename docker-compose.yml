@@ -3,7 +3,7 @@ version: '3.3'
 services:
   # mongodb数据库
   mongodb:
-    pid: "blog-mongodb"
+    pid: "node-mongodb"
     privileged: true
     restart: always
     image: mongo:3.2
@@ -26,7 +26,21 @@ services:
       - ./nginx/conf:/usr/local/openresty/nginx/conf
       - ./nginx/logs:/usr/local/openresty/nginx/logs
       - ./nginx/html:/usr/local/openresty/nginx/html
-
+    
+  # nodejs 后端
+  back-end:
+    pid: "node-backend"
+    privileged: true
+    restart: always
+    image: node:8.0.0
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongodb
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: bash -c "npm install && npm start"
     # wiki-tree 前端
     # back-end:
     #   pid: "blog-backend"
