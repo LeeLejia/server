@@ -11,8 +11,8 @@ services:
       - 27017:27017
     volumes:
       # - /home/ubuntu/project/docker/mongodb:/data/db
-      - ./mongodb:/data/db
-  
+      - F:/docker/mongodb:/data/db
+
   # nginx
   nginx:
     pid: "blog-nginx"
@@ -40,7 +40,7 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install && npm start"
+    command: bash -c "npm install && node ./src/server.js"
     # wiki-tree 前端
     # back-end:
     #   pid: "blog-backend"

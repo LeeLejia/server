@@ -1,9 +1,9 @@
-import { MongoClient } from 'mongodb'
-// import config from './config'
-import config from 'config'
+// import { MongoClient } from 'mongodb'
+// // import config from './config'
+// import config from 'config'
 
-// var MongoClient = require('mongodb')
-// var config = require('./config')
+var { MongoClient } = require('mongodb')
+var config = require('config')
 
 let _db, _schema, statisticsModel
 
@@ -15,9 +15,9 @@ mongoose.Promise = global.Promise
 /* 用于查看mongoose模块对mongodb操作的日志 */
 mongoose.set('debug', config.get('mongodb.debug'))
 
-export default {
+module.exports = {
   initDB: (cb) => {
-    _db = mongoose.connect(config.get('mongodb.uri'), function (err) {
+    _db = mongoose.connect(config.get('mongodb.uri'),{ useNewUrlParser: true }, function (err) {
       if (err) {
         console.error('mongodb connect fail', err)
       } else {
