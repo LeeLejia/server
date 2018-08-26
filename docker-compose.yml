@@ -11,7 +11,7 @@ services:
       - 27017:27017
     volumes:
       # - /home/ubuntu/project/docker/mongodb:/data/db
-      - F:/docker/mongodb:/data/db
+      - ./mongodb:/data/db
 
   # nginx
   nginx:
@@ -24,9 +24,10 @@ services:
     # external_links:
     volumes:
       - ./nginx/conf:/usr/local/openresty/nginx/conf
-      - ./nginx/logs:/usr/local/openresty/nginx/logs
+      - ./nginx/log:/usr/local/openresty/nginx/log
       - ./nginx/html:/usr/local/openresty/nginx/html
-    
+      - ./nginx:/nginx/pid  
+  
   # nodejs 后端
   back-end:
     pid: "node-backend"
