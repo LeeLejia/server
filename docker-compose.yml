@@ -28,12 +28,12 @@ services:
       - ./nginx/html:/usr/local/openresty/nginx/html
       - ./nginx:/nginx/pid  
   
-  # nodejs 后端
+  # nodejs 前端
   back-end:
-    pid: "node-backend"
+    pid: "node-frontend"
     privileged: true
     restart: always
-    image: node:8.0.0
+    image: node:9.8.0
     ports:
       - 8000:8000
     depends_on:
@@ -41,7 +41,7 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install babel-cli --save-dev && npm install babel-cli -g && npm install babel-preset-es2015 --save-dev && npm install babel-core --save && npm install babel-preset-stage-3 --save && npm install && node ./src/server.js"
+    command: bash -c "npm install && node ./src/server.js"
     # wiki-tree 前端
     # back-end:
     #   pid: "blog-backend"
