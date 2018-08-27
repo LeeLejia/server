@@ -1,27 +1,16 @@
-const statistics_define = {
+const log_define = {
     definition: {
-        display_name: String,
-        statistics_index: String,
-        order: Number,
-        status: Number,
-        dm: String,
-        action: String,
-        dimensions: Array,
-        is_drop_duplicate: Boolean,
-        calculate_interval: Boolean,
-        field: String,
-        methods: Array,
-        custom_filter: Array,
-        mapping: {
-            at: String,
-            cd: String,
-            cv: String
-        }
+        type: String,
+        user: String,
+        ip: String,
+        msg: String,
+        info: Object,
+        call_stack:String,
     },
     options: {
-        collection: 'statistics_define',
+        collection: 'logs',
         timestamps:true
     }
 }
 
-module.exports = statistics_define
+module.exports = log_define

@@ -1,14 +1,8 @@
-// import { MongoClient } from 'mongodb'
-// // import config from './config'
-// import config from 'config'
-
-var { MongoClient } = require('mongodb')
 var config = require('config')
-
-let _db, _schema, statisticsModel
-
-var statistics_define = require('./schema_definition')
+var log_define = require('./schema_definition')
 var mongoose = require('mongoose')
+
+let _db, _schema, logModel
 
 mongoose.Promise = global.Promise
 
@@ -22,20 +16,20 @@ module.exports = {
         console.error('mongodb connect fail', err)
       } else {
         console.info('mongodb connect successful')
-        _schema = new mongoose.Schema(statistics_define.definition, statistics_define.options)
-        statisticsModel = mongoose.model(statistics_define.options.collection, _schema)
+        _schema = new mongoose.Schema(log_define.definition, log_define.options)
+        logModel = mongoose.model(log_define.options.collection, _schema)
       }
       if (cb) cb(err)
     })
   },
-  getStatisticsModel: () => {
-    return statisticsModel
+  getLogModel: () => {
+    return logModel
   },
   insert: (objs, cb) => {
     if (Array.isArray(objs)) {
-      statisticsModel.insertMany(objs, cb)
+      logModel.insertMany(objs, cb)
     } else {
-      statisticsModel.create(objs, cb)
+      logModel.create(objs, cb)
     }
   },
   disconnect: () => {
