@@ -27,18 +27,19 @@ services:
       - ./nginx/log:/usr/local/openresty/nginx/log
       - ./nginx/html:/usr/local/openresty/nginx/html
       - ./nginx:/nginx/pid  
+      - /home/ubuntu/sites:/var/sites
   
-  # nodejs 前端
-  back-end:
-    pid: "node-frontend"
+  # knowu 前端
+  knowu:
+    pid: "knowu-frontend"
     privileged: true
     restart: always
     image: node:9.8.0
-    ports:
-      - 8000:8000
+    expose:
+      - 80
     depends_on:
       - mongodb
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install && node ./src/knowu_server.js && node ./src/wiki_server.js"
+    command: bash -c "npm install && node ./src/knowu_server.js"
