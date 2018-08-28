@@ -8,7 +8,7 @@ services:
     restart: always
     image: mongo:3.2
     ports:
-      - 127.0.0.1:27017:27017
+      - 27017:27017
     volumes:
       # - /home/ubuntu/project/docker/mongodb:/data/db
       - ../mongodb:/data/db
@@ -41,18 +41,4 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install && node ./src/server.js"
-    # wiki-tree 前端
-    # back-end:
-    #   pid: "blog-backend"
-    #   privileged: true
-    #   restart: always
-    #   image: node:8.0.0
-    #   ports:
-    #     - 8000:8000
-    #   depends_on:
-    #     - mongodb
-    #   volumes:
-    #     - ../:/app
-    #   working_dir: /app
-    #   command: bash -c "npm install && npm rebuild node-sass --force && npm run build --prod"
+    command: bash -c "npm install && node ./src/knowu_server.js && node ./src/wiki_server.js"
