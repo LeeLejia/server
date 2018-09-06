@@ -1,5 +1,6 @@
 const log_define = {
     definition: {
+        platform: String,
         type: String,
         user: String,
         ip: String,

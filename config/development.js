@@ -3,7 +3,7 @@
 module.exports = {
   ...require('./default'),
   mongodb: {
-    uri: process.env.MONGODB || "mongodb://mongodb/knowu",
+    uri: process.env.MONGODB || "mongodb://www.cjwddz.cn/knowu",
     debug: false,
   },
   redis:{
