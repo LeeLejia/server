@@ -19,6 +19,8 @@ services:
     privileged: true
     restart: always
     image: openresty/openresty
+    depends_on:
+      - knowu
     ports: 
       - 8080:80
     # external_links:
@@ -35,11 +37,11 @@ services:
     privileged: true
     restart: always
     image: node:9.8.0
-    expose:
-      - 80
+    ports:
+      - 8888:8888
     depends_on:
       - mongodb
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install && node ./src/knowu_server.js"
+    command: bash -c "npm install & node ./src/knowu_server.js"
