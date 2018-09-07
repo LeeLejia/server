@@ -8,7 +8,7 @@ services:
     restart: always
     image: mongo:3.2
     ports:
-      - 27017:27017
+      - 23333:27017
     volumes:
       # - /home/ubuntu/project/docker/mongodb:/data/db
       - ../mongodb:/data/db
@@ -38,7 +38,7 @@ services:
     privileged: true
     restart: always
     image: node:9.8.0
-    ports:
+    expose:
       - 8888:8888
     depends_on:
       - mongodb
@@ -53,7 +53,7 @@ services:
     privileged: true
     restart: always
     image: node:9.8.0
-    ports:
+    expose:
       - 8888:8888
     depends_on:
       - mongodb
