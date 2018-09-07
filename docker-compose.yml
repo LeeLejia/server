@@ -39,7 +39,7 @@ services:
     restart: always
     image: node:9.8.0
     expose:
-      - 8888:8888
+      - 8888
     depends_on:
       - mongodb
     volumes:
@@ -54,7 +54,7 @@ services:
     restart: always
     image: node:9.8.0
     expose:
-      - 8888:8888
+      - 8888
     depends_on:
       - mongodb
     volumes:
