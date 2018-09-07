@@ -15,12 +15,13 @@ services:
 
   # nginx
   nginx:
-    pid: "blog-nginx"
+    pid: "nginx"
     privileged: true
     restart: always
     image: openresty/openresty
     depends_on:
       - knowu
+      - wiki
     ports: 
       - 8080:80
     # external_links:
@@ -33,7 +34,7 @@ services:
   
   # knowu 前端
   knowu:
-    pid: "knowu-frontend"
+    pid: "knowu-server"
     privileged: true
     restart: always
     image: node:9.8.0
@@ -44,4 +45,19 @@ services:
     volumes:
       - ./:/app
     working_dir: /app
-    command: bash -c "npm install & node ./src/knowu_server.js"
+    command: bash -c "npm install & MONGODB=mongodb://mongodb/knowu node ./src/knowu_server.js"
+
+  # knowu 前端
+  wiki:
+    pid: "wiki-server"
+    privileged: true
+    restart: always
+    image: node:9.8.0
+    ports:
+      - 8888:8888
+    depends_on:
+      - mongodb
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: bash -c "npm install & MONGODB=mongodb://mongodb/wiki node ./src/wiki_server.js"
