@@ -1,10 +1,10 @@
 var config = require('config')
-var log_define = require('./knowu_schema_definition/log')
-var user_log_define = require('./knowu_schema_definition/user_log')
-var user_define = require('./knowu_schema_definition/user')
+var log_define = require('../schema_definition/knowu/log')
+var user_log_define = require('../schema_definition/knowu/user_log')
+var user_define = require('../schema_definition/knowu/user')
 var mongoose = require('mongoose')
 
-let _db, logModel
+let _db, logModel, userLogModel, userModel
 
 mongoose.Promise = global.Promise
 
@@ -18,11 +18,11 @@ module.exports = {
         console.error('mongodb connect fail', err)
       } else {
         console.info('mongodb connect successful')
-        _log_schema = new mongoose.Schema(log_define.definition, log_define.options)
+        let _log_schema = new mongoose.Schema(log_define.definition, log_define.options)
         logModel = mongoose.model(log_define.options.collection, _log_schema)
-        _user_log_schema = new mongoose.Schema(user_log_define.definition, user_log_define.options)
+        let _user_log_schema = new mongoose.Schema(user_log_define.definition, user_log_define.options)
         userLogModel = mongoose.model(user_log_define.options.collection, _user_log_schema)
-        _user_schema = new mongoose.Schema(user_define.definition, user_define.options)
+        let _user_schema = new mongoose.Schema(user_define.definition, user_define.options)
         userModel = mongoose.model(user_define.options.collection, _user_schema)
         console.info('mongodb init definition successful')
       }

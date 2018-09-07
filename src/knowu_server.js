@@ -1,5 +1,5 @@
 'use strict'
-var mongo = require('./mongo_knowu')
+var mongo = require('./mongo/knowu')
 var config = require('config')
 var express = require('express')
 var utils = require('./utils/utils')
@@ -11,7 +11,7 @@ app.use(express.static('public'))
 const prefix_path = "/knowu"
 // 添加系统日志
 app.post(`${prefix_path}/addSystemLog`,urlencodedParser, function(req, res){
-   var info = ''
+   var info = {}
    try{
      info = JSON.parse(req.body.info)
    }catch(e){
@@ -36,7 +36,7 @@ app.post(`${prefix_path}/addUserLog`,urlencodedParser, function(req, res){
     res.end(JSON.stringify({status:'error',msg: 'bad user'}))
     return
   }
-  var info = ''
+  var info = {}
   try{
     info = JSON.parse(req.body.info)
   }catch(e){
@@ -59,7 +59,7 @@ app.post(`${prefix_path}/addUser`,urlencodedParser, function(req, res){
     res.end(JSON.stringify({status:'error',msg:`bad ${(!req.body.phone)?'phone':'weixin'}`}))
     return
   }
-  var more = ''
+  var more = {}
   try{
     more = JSON.parse(req.body.more)
   }catch(e){
