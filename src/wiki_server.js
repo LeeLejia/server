@@ -5,27 +5,15 @@ var express = require('express')
 var utils = require('./utils/utils')
 var app = express()
 var bodyParser = require('body-parser')
+var jsoncodedParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static('public'))
 
 const prefix = "/wiki"
 
 // 添加文章
-app.post(`${prefix}/addArticle`, urlencodedParser, function (req, res) {
-  var info = {}
-  try {
-    info = JSON.parse(req.body.info)
-  } catch (e) {
-    console.log(`JSON转换失败：${e}`)
-  }
-  var article = {
-    id: req.body.articleId,
-    user: req.body.user,
-    type: req.body.type,
-    info: info,
-    content: req.body.content
-  }
-  mongo.insertArticle(article)
+app.post(`${prefix}/addArticle`, jsoncodedParser, function (req, res) {
+  mongo.insertArticle(req.body)
   res.end(JSON.stringify({ status: true }))
 })
 
@@ -74,30 +62,6 @@ app.get(`${prefix}/deleteArticle/:id`,urlencodedParser, function (req, res) {
   })
 })
 
-
-// 添加wiki
-app.post(`${prefix}/addTree`, urlencodedParser, function (req, res) {
-  var children = []
-  var more = {}
-  try {
-    more = JSON.parse(req.body.more)
-    children = JSON.parse(req.body.children)
-  } catch (e) {
-    console.log(`JSON转换失败：${e}`)
-    children = []
-  }
-  var tree = {
-    id: req.body.treeId,
-    user: req.body.user,
-    name: req.body.name,
-    more,
-    article: req.body.articleId,
-    children
-  }
-  mongo.insertTree(tree)
-  res.end(JSON.stringify({ status: true }))
-})
-
 // 读取wiki
 app.get(`${prefix}/tree/:id`, urlencodedParser, function (req, res) {
   let wiki = req.params.id
@@ -114,32 +78,23 @@ app.get(`${prefix}/tree/:id`, urlencodedParser, function (req, res) {
   })
 })
 
-// 更新wiki
-app.post(`${prefix}/modifyTree/:id`, urlencodedParser, function (req, res) {
-  var data = ''
-  req.on('data', (chunk) => { data += chunk })
-  req.on('end', () => {
-    let json = {}
-    try {
-      json = JSON.parse(data)
-      if(json.id && json.id !== req.params.id){
-        res.end(JSON.stringify({ status: false,msg:"bad id" }))
-        return
-      }
-      delete json._id
-      delete json.__v
-      delete json.createdAt
-      delete json.updateAt
-      mongo.getTreeModel().findOneAndUpdate({ id: json.id }, { $set: json }, {new: true, fields: {__v:0}}, (err, adventure) => {
-        if (err) {
-          res.end(JSON.stringify({ status: false, msg: err }))
-          return
-        }
-        res.end(JSON.stringify({ status: !!adventure, tree: adventure }))
-      })
-    } catch (err) {
+// 添加或者更新wiki
+app.post(`${prefix}/modifyTree/:id`, jsoncodedParser, function (req, res) {
+  const json = req.body
+  if(json.id && json.id !== req.params.id){
+    res.end(JSON.stringify({ status: false,msg:"bad id" }))
+    return
+  }
+  delete json._id
+  delete json.__v
+  delete json.createdAt
+  delete json.updateAt
+  mongo.getTreeModel().findOneAndUpdate({ id: json.id }, { $set: json }, {new: true, upsert: true, fields: {__v:0}}, (err, adventure) => {
+    if (err) {
       res.end(JSON.stringify({ status: false, msg: err }))
+      return
     }
+    res.end(JSON.stringify({ status: !!adventure, tree: adventure }))
   })
 })
 
