@@ -28,9 +28,8 @@ services:
     volumes:
       - ./nginx/conf:/usr/local/openresty/nginx/conf
       - ./nginx/log:/usr/local/openresty/nginx/log
-      - ./nginx/html:/usr/local/openresty/nginx/html
+      - /home/ubuntu/sites:/usr/local/openresty/nginx/html
       - ./nginx:/nginx/pid  
-      - /home/ubuntu/sites:/var/sites
   
   # knowu 前端
   knowu:
