@@ -8,7 +8,7 @@ module.exports = {
   },
   redis:{
     port : 6379,
-    host : 'redis.wps.cn',
-    password: 'abc123'
+    host : 'xxxx',
+    password: 'xxx'
   }
 };
